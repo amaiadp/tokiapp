@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.amaia.grupo.AnadirSitioActivity">
+
+    <EditText
+        android:id="@+id/et_nombre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:ems="10"
+        android:hint="@string/nombre"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/anadirImagen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="?attr/actionBarSize"/>
+
+    <EditText
+        android:id="@+id/et_descripcion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/descripcion"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/et_nombre"
+        app:layout_constraintStart_toStartOf="@+id/et_nombre"
+        app:layout_constraintTop_toBottomOf="@+id/et_nombre" />
+
+    <CheckBox
+        android:id="@+id/cb_privado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/privado"
+        app:layout_constraintStart_toStartOf="@+id/tv_tag"
+        app:layout_constraintTop_toBottomOf="@+id/sp_tag" />
+
+    <Spinner
+        android:id="@+id/sp_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:entries="@array/tag_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_tag"
+        app:layout_constraintStart_toEndOf="@+id/tv_tag"
+        app:layout_constraintTop_toTopOf="@+id/tv_tag" />
+
+    <EditText
+        android:id="@+id/et_comentario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/comentario"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="@+id/tv_ubic"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ubic" />
+
+    <Button
+        android:id="@+id/bt_anadir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/anadir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_comentario" />
+
+    <TextView
+        android:id="@+id/tv_ubic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/ubicacion"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="@+id/cb_privado"
+        app:layout_constraintTop_toBottomOf="@+id/cb_privado" />
+
+    <TextView
+        android:id="@+id/tv_ubiDato"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text=""
+        android:textSize="8sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_ubic"
+        app:layout_constraintTop_toTopOf="@+id/tv_ubic" />
+
+    <ImageButton
+        android:id="@+id/anadirImagen"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <TextView
+        android:id="@+id/tv_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/tag"
+        app:layout_constraintStart_toStartOf="@+id/et_descripcion"
+        app:layout_constraintTop_toBottomOf="@+id/et_descripcion" />
+</android.support.constraint.ConstraintLayout>

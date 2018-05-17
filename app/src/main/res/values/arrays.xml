@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ubicacionOpcion">
+        <item>@string/actual</item>
+        <item>@string/cogerDeMapa</item>
+    </string-array>
+    <string-array name="fotoOpcion">
+        <item>@string/camara</item>
+        <item>@string/galeria</item>
+    </string-array>
+
+    <string-array name="tag_spinner">
+        <item>@string/tag_otro</item>
+        <item>@string/tag_rest</item>
+        <item>@string/tag_cultura</item>
+        <item>@string/tag_ocio</item>
+    </string-array>
+
+    <string name="tag_ocio">Ocio</string>
+    <string name="tag_cultura">Cultura</string>
+    <string name="tag_rest">Restauración</string>
+    <string name="tag_otro">Otro</string>
+</resources>

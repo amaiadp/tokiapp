@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="@null">
+        <menu>
+            <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/nav_home"
+                    android:icon="@drawable/ic_menu_camera"
+                    android:title="@string/nav_home" />
+                <item
+                    android:id="@+id/nav_public"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="@string/nav_public" />
+                <item
+                    android:id="@+id/nav_privado"
+                    android:icon="@drawable/ic_menu_slideshow"
+                    android:title="@string/nav_privado" />
+                <item
+                    android:id="@+id/nav_anadir"
+                    android:icon="@drawable/ic_menu_manage"
+                    android:title="@string/nav_anadir" />
+            </group>
+        </menu>
+    </item>
+
+    <group >
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/nav_logout" />
+
+    </group>
+
+</menu>
