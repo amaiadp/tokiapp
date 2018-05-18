@@ -21,6 +21,8 @@ public class ExplorarListAdaptador extends BaseAdapter {
         inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+
+
     @Override
     public int getCount() {
         return sitios.length;
@@ -52,17 +54,12 @@ public class ExplorarListAdaptador extends BaseAdapter {
         String TAG = sitios[i].getTAG();
         tvTag.setText(TAG);
 
-        TextView tvDistancia = (TextView) view.findViewById(R.id.distancia);
-        //TODO: Conseguir latlong del momento
-        double lat = 0.0;
-        double lng = 0.0;
-        double distancia = sitios[i].calcularDistancia(lat,lng);
-        tvDistancia.setText(String.valueOf(distancia));
-
         ImageView img = (ImageView) view.findViewById(R.id.imagen);
         Bitmap imagen = sitios[i].getPrimeraImagen();
         img.setImageBitmap(imagen);
 
         return view;
     }
+
+
 }

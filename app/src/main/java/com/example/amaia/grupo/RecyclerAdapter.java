@@ -28,7 +28,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.laclas
     @Override
     public void onBindViewHolder(laclaseViewHolder holder, int position) {
         holder.nombre.setText(sitios[position].getNombre());
-        holder.descripcion.setText(sitios[position].getDescripcion());
         holder.foto.setImageBitmap(sitios[position].getPrimeraImagen());
     }
 
@@ -38,13 +37,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.laclas
     }
 
     public static class laclaseViewHolder extends RecyclerView.ViewHolder {
-        public TextView nombre,descripcion;
+        public TextView nombre;
         public ImageView foto;
 
         public laclaseViewHolder(View v) {
             super(v);
             nombre = v.findViewById(R.id.textonombre);
-            descripcion = v.findViewById(R.id.textodescripcion);
             foto = v.findViewById(R.id.foto);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -62,7 +60,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.laclas
                     intent.putExtra("latitud",sitio.getLatitud());
                     intent.putExtra("longitud",sitio.getLongitud());
                     intent.putExtra("tag",sitio.getTAG());
-                    intent.putExtra("imagen", sitio.getImagen());
+//                    intent.putExtra("imagen", sitio.getImagen());
                     view.getContext().startActivity(intent);
                 }
             });

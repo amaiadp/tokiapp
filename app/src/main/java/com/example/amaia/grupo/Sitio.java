@@ -4,9 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.text.DecimalFormat;
 
 /**
  * Created by zihara on 24/04/18.
@@ -47,10 +51,7 @@ public class Sitio {
     }
 
 
-    public double calcularDistancia(double lat, double lng){
-        //TODO: Formula distancia
-        return 0.0;
-    }
+
 
     public int getID() {
         return IDSitio;
@@ -110,5 +111,6 @@ public class Sitio {
 //    public void putComentarios(JSONArray coments){
 //
 //    }
+
 
 }

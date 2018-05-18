@@ -12,6 +12,7 @@
     <ListView
         android:id="@+id/lista_explorar"
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/margen_arriba"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:layout_weight="1"
