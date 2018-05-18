@@ -60,5 +60,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="dg_titFaltaInfo">Faltan datos</string>
     <string name="dg_msgFaltaInfo">Rellena los campos de nombre, descripción y ubicación por lo menos</string>
+    <string name="borrar">BORRAR</string>
+    <string name="editar">EDITAR</string>
 
 </resources>
