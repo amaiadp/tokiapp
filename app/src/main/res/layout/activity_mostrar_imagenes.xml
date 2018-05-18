@@ -10,6 +10,6 @@
         android:id="@+id/pager_imagenes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"/>
+        android:layout_marginTop="@dimen/margen_arriba"/>
 
 </android.support.constraint.ConstraintLayout>

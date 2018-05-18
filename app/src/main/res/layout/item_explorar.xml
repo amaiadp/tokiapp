@@ -56,20 +56,6 @@
         app:layout_constraintTop_toTopOf="@id/imagen"
         app:layout_constraintBottom_toBottomOf="@id/imagen"
         app:layout_constraintStart_toEndOf="@id/descripcion"
-        app:layout_constraintEnd_toStartOf="@id/distancia" />
-
-    <TextView
-        android:id="@+id/distancia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:focusable="false"
-        android:text=" - "
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintTop_toTopOf="@id/imagen"
-        app:layout_constraintBottom_toBottomOf="@id/imagen"
-        app:layout_constraintStart_toEndOf="@id/TAG"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
