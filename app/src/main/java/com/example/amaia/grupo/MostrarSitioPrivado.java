@@ -31,6 +31,8 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
     private EditText comentario;
     private ImageView imagen;
     private int sitioID,comID;
+    private String name,descr;
+    private Double lat,lng;
 
 
     @Override
@@ -49,11 +51,16 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
         imagen = findViewById(R.id.imagenPrivado);
         comentario = findViewById(R.id.etcomentariosprivado);
 
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             cargarSitio(extras);
 
             sitioID = extras.getInt("id");
+            name = extras.getString("nombre");
+            descr= extras.getString("descripcion");
+            lat = extras.getDouble("latitud");
+            lng = extras.getDouble("longitud");
             Button borrar_sitio = findViewById(R.id.borrar_privado);
             borrar_sitio.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,6 +70,10 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
                     db.execute();
                 }
             });
+
+            DBRemote db = new DBRemote(this, "seleccionarPrimeraImagen", "sitios", "sitioID=" + this.sitioID);
+            db.execute();
+
 
             Button editar_sitio = findViewById(R.id.editar_privado);
             editar_sitio.setOnClickListener(new View.OnClickListener() {
@@ -90,15 +101,21 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
             });
 
 
-            DBRemote db = new DBRemote(MostrarSitioPrivado.this,"conseguirComentarios","comentarios","sitioID="+sitioID);
-            db.execute();
+            DBRemote db2 = new DBRemote(MostrarSitioPrivado.this,"conseguirComentarios","comentarios","sitioID="+sitioID);
+            db2.execute();
 
 
             Button mostrar_en_mapa = findViewById(R.id.btnmostrarMapaPrivado);
             mostrar_en_mapa.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO: llamada a la activity de maps
+                    Intent intent = new Intent(MostrarSitioPrivado.this, MapsActivity.class);
+                    intent.putExtra("nombre",name);
+                    intent.putExtra("descripcion",descr);
+                    intent.putExtra("latitud",lat);
+                    intent.putExtra("longitud",lng);
+                    startActivity(intent);
+
                 }
             });
 
@@ -122,12 +139,12 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
         nombre.setText(extras.getString("nombre"));
         descripcion.setText(extras.getString("descripcion"));
         TAG.setText(extras.getString("tag"));
-        String img = extras.getString("imagen");
-        if(img!=null) {
-            byte[] imagenByte = Base64.decode(img, Base64.DEFAULT);
-            Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
-            imagen.setImageBitmap(imagenBitmap);
-        }
+//        String img = extras.getString("imagen");
+//        if(img!=null) {
+//            byte[] imagenByte = Base64.decode(img, Base64.DEFAULT);
+//            Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
+//            imagen.setImageBitmap(imagenBitmap);
+//        }
 
     }
 
@@ -136,6 +153,11 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
     public void responderDB(String resultados, String id) {
         JSONParser parser = new JSONParser();
         switch (id){
+            case "seleccionarPrimeraImagen":
+                byte[] imagenByte = Base64.decode(resultados, Base64.DEFAULT);
+                Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
+                imagen.setImageBitmap(imagenBitmap);
+            break;
             case "borrarSitio":
                 if(Boolean.parseBoolean(resultados)){
                     Toast.makeText(MostrarSitioPrivado.this,R.string.sitioBorrado, Toast.LENGTH_SHORT).show();

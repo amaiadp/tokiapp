@@ -62,7 +62,7 @@ public class ListaExplorar extends DrawerActivity implements AdapterView.OnItemC
         intent.putExtra("latitud",sitio.getLatitud());
         intent.putExtra("longitud",sitio.getLongitud());
         intent.putExtra("tag",sitio.getTAG());
-        intent.putExtra("imagen", sitio.getImagen());
+//        intent.putExtra("imagen", sitio.getImagen());
         startActivity(intent);
     }
 

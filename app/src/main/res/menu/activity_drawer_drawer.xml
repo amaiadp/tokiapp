@@ -8,19 +8,19 @@
             <group android:checkableBehavior="none">
                 <item
                     android:id="@+id/nav_home"
-                    android:icon="@drawable/ic_menu_camera"
+                    android:icon="@drawable/ic_home_black_24dp"
                     android:title="@string/nav_home" />
                 <item
                     android:id="@+id/nav_public"
-                    android:icon="@drawable/ic_menu_gallery"
+                    android:icon="@drawable/ic_near_me_black_24dp"
                     android:title="@string/nav_public" />
                 <item
                     android:id="@+id/nav_privado"
-                    android:icon="@drawable/ic_menu_slideshow"
+                    android:icon="@drawable/ic_person_pin_circle_black_24dp"
                     android:title="@string/nav_privado" />
                 <item
                     android:id="@+id/nav_anadir"
-                    android:icon="@drawable/ic_menu_manage"
+                    android:icon="@drawable/ic_add_location_black_24dp"
                     android:title="@string/nav_anadir" />
             </group>
         </menu>
@@ -29,7 +29,7 @@
     <group >
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_power_settings_new_black_24dp"
                 android:title="@string/nav_logout" />
 
     </group>

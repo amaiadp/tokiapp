@@ -1,13 +1,16 @@
 package com.example.amaia.grupo;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.simple.JSONArray;
@@ -20,12 +23,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private String listaSitios;
+    private ArrayList<JSONObject> listaJSON = new ArrayList<>();
+    private ArrayList<Marker> listaMarkers = new ArrayList<>();
+    private String nombre, descripcion;
+    private Double lat,lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             listaSitios = extras.getString("listaSitios");
+            nombre= extras.getString("nombre");
+            descripcion = extras.getString("descripcion");
+            lat = extras.getDouble("latitud");
+            lng = extras.getDouble("longitud");
+
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
@@ -65,15 +77,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (int i = 0; i < jsonarray.size(); i++) {
                     JSONObject obj = (JSONObject) jsonarray.get(i);
                     String descripcion = (String) obj.get("descripcion");
+                    String nombre = (String) obj.get("nombre");
                     double latitud = Double.parseDouble((String) obj.get("latitud"));
                     double longitud= Double.parseDouble((String) obj.get("longitud"));
+                    listaJSON.add(obj);
                     sitio = new LatLng(latitud,longitud);
-                    mMap.addMarker(new MarkerOptions().position(sitio).title(descripcion));
+                    MarkerOptions mark = new MarkerOptions().position(sitio).title(nombre).snippet(descripcion);
+                    listaMarkers.add(mMap.addMarker(mark));
+
                 }
 
-                if(sitio!=null) {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sitio,15));
-                }
+//                if(sitio!=null) {
+//                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sitio,15));
+//                }
+                mMap.setMyLocationEnabled(true);
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+
+                        if(listaSitios!=null){
+                            int index=  listaMarkers.indexOf(marker);
+                            Intent intent;
+                            JSONObject json = listaJSON.get(index);
+                            if(Integer.parseInt((String) json.get("privado")) > 0){
+                                intent = new Intent(MapsActivity.this, MostrarSitioPrivado.class);
+                            }else{
+                                intent = new Intent(MapsActivity.this, TabsPublico.class);
+                            }
+
+
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                            int IDSitio = (int) Integer.valueOf((String)json.get("id"));
+                            String nombre = (String) json.get("nombre");
+                            String descripcion = (String) json.get("descripcion");
+                            double latitud = (double) Double.valueOf((String) json.get("latitud"));
+                            double longitud = (double) Double.valueOf((String)json.get("longitud"));
+                            String TAG = (String)json.get("tag");
+
+
+                            //mandar sitio
+                            intent.putExtra("id",IDSitio);
+                            intent.putExtra("nombre",nombre);
+                            intent.putExtra("descripcion",descripcion);
+                            intent.putExtra("latitud",latitud);
+                            intent.putExtra("longitud",longitud);
+                            intent.putExtra("tag",TAG);
+                            startActivity(intent);
+                        }
+
+                    }
+                });
+
+            }else{ //si solo hay que mostrar un sitio
+                LatLng sitio = new LatLng(lat,lng);
+                MarkerOptions mark = new MarkerOptions().position(sitio).title(nombre).snippet(descripcion);
+                mMap.addMarker(mark);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sitio,15));
 
             }
         }catch (Exception e){

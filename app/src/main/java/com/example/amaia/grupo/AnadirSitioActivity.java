@@ -109,41 +109,51 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
         bt_anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONArray jsArray = new JSONArray();
-                for (int i = 0; imagenes.size()>i; i++ ) {
-                    ByteArrayOutputStream output = new ByteArrayOutputStream();
-                    imagenes.get(i).compress(Bitmap.CompressFormat.JPEG, 50, output);
-                    byte[] byteArray = output.toByteArray();
-                    String imageStr = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    jsArray.add(i,imageStr);
+                if (camposRellenados()) {
+                    JSONArray jsArray = new JSONArray();
+                    for (int i = 0; imagenes.size() > i; i++) {
+                        ByteArrayOutputStream output = new ByteArrayOutputStream();
+                        imagenes.get(i).compress(Bitmap.CompressFormat.JPEG, 50, output);
+                        byte[] byteArray = output.toByteArray();
+                        String imageStr = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        jsArray.add(i, imageStr);
+                    }
+
+
+                    HashMap<String, String> detail = new HashMap<>();
+                    detail.put("user_id", String.valueOf(MainActivity.getUserId()));
+                    detail.put("nombre", String.valueOf(et_nombre.getText()));
+                    detail.put("descripcion", String.valueOf(et_descripcion.getText()));
+                    detail.put("comentario", String.valueOf(et_comentario.getText()));
+                    detail.put("privado", String.valueOf(cb_privado.isChecked()));
+                    detail.put("latitud", String.valueOf(latitud));
+                    detail.put("longitud", String.valueOf(longitud));
+                    detail.put("imagenes", jsArray.toJSONString());
+                    detail.put("tag", lista_tag[spinner.getSelectedItemPosition()]);
+
+
+                    String params = AnadirSitioActivity.this.hashMapToUrl(detail);
+                    Log.i("AnadirSitio", "Params:   " + params);
+                    DBRemote dbr = new DBRemote(AnadirSitioActivity.this, "anadirSitio", "sitiosMod", params);
+                    dbr.execute();
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(AnadirSitioActivity.this).create();
+                    alertDialog.setTitle(getResources().getString(R.string.dg_titFaltaInfo));
+                    alertDialog.setMessage(getResources().getString(R.string.dg_msgFaltaInfo));
+                    alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
                 }
-
-
-
-
-
-                HashMap<String,String> detail = new HashMap<>();
-                detail.put("user_id", String.valueOf(MainActivity.getUserId()));
-                detail.put("nombre", String.valueOf(et_nombre.getText()));
-                detail.put("descripcion", String.valueOf(et_descripcion.getText()));
-                detail.put("comentario", String.valueOf(et_comentario.getText()));
-                detail.put("privado", String.valueOf(cb_privado.isChecked()));
-                detail.put("latitud", String.valueOf(latitud));
-                detail.put("longitud", String.valueOf(longitud));
-                detail.put("imagenes",jsArray.toJSONString());
-                detail.put("tag", lista_tag[spinner.getSelectedItemPosition()]);
-
-
-                String params =AnadirSitioActivity.this.hashMapToUrl(detail);
-                Log.i("AnadirSitio", "Params:   "+ params);
-                DBRemote dbr = new DBRemote(AnadirSitioActivity.this, "anadirSitio", "sitiosMod", params);
-                dbr.execute();
             }
         });
 
 
-        TextView tv_registro = (TextView) findViewById(R.id.tv_ubic);
-        tv_registro.setOnClickListener(new View.OnClickListener() {
+        TextView tv_ubic = (TextView) findViewById(R.id.tv_ubic);
+        tv_ubic.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -183,7 +193,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                                                         }
                                                     });
                                         }
-                                    }else{
+                                    }else{//si no esta el gps activado
                                         AlertDialog alertDialog = new AlertDialog.Builder(AnadirSitioActivity.this).create();
                                         alertDialog.setTitle(getResources().getString(R.string.dg_titNOgps));
                                         alertDialog.setMessage(getResources().getString(R.string.dg_msgNOgps));
@@ -240,6 +250,13 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
             }
         });
 
+    }
+
+    private boolean camposRellenados() {
+        return (!et_nombre.getText().toString().trim().equals("")&&
+                !et_descripcion.getText().toString().trim().equals("")&&
+                latitud!=null &&
+                longitud!=null);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

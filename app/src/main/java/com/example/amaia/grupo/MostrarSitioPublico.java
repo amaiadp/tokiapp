@@ -14,11 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-public class MostrarSitioPublico extends Fragment {
+public class MostrarSitioPublico extends Fragment implements DBRemote.BaseDatosRespueta {
 
     private int id;
-    private double latitud,longitud;
+    private Double latitud,longitud;
     private EditText etnombre,etdescripcion,etTAG;
+    private String name,descr;
     private ImageView imagen;
 
 
@@ -40,17 +41,28 @@ public class MostrarSitioPublico extends Fragment {
         imagen = v.findViewById(R.id.imagenPublico);
         if (extras != null) {
             id = extras.getInt("id");
+            name = extras.getString("nombre");
+            descr= extras.getString("descripcion");
             latitud = extras.getDouble("latitud");
             longitud = extras.getDouble("longitud");
             cargarSitio(extras);
         }
+
+        DBRemote db = new DBRemote(this, "seleccionarPrimeraImagen", "sitios", "sitioID=" + this.id);
+        db.execute();
 
 
         Button mostrar_en_mapa = v.findViewById(R.id.btnmostrarMapaPublico);
         mostrar_en_mapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO llamada al mapa
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                intent.putExtra("nombre",name);
+                intent.putExtra("descripcion",descr);
+                intent.putExtra("latitud",latitud);
+                intent.putExtra("longitud",longitud);
+                startActivity(intent);
+
             }
         });
 
@@ -58,7 +70,6 @@ public class MostrarSitioPublico extends Fragment {
         mostrar_imagenes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO:mostrarImagenes (con ViewPager)
                 Intent i = new Intent(getActivity(), MostrarImagenes.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.putExtra("sitioID", id);
@@ -72,9 +83,18 @@ public class MostrarSitioPublico extends Fragment {
         etnombre.setText(extras.getString("nombre"));
         etdescripcion.setText(extras.getString("descripcion"));
         etTAG.setText(extras.getString("tag"));
-        String img = extras.getString("imagen");
-        if(img!=null) {
-            byte[] imagenByte = Base64.decode(img, Base64.DEFAULT);
+//        String img = extras.getString("imagen");
+//        if(img!=null) {
+//            byte[] imagenByte = Base64.decode(img, Base64.DEFAULT);
+//            Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
+//            imagen.setImageBitmap(imagenBitmap);
+//        }
+    }
+
+    @Override
+    public void responderDB(String resultados, String id) {
+        if(resultados!=null){
+            byte[] imagenByte = Base64.decode(resultados, Base64.DEFAULT);
             Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
             imagen.setImageBitmap(imagenBitmap);
         }
