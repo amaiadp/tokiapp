@@ -33,7 +33,7 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
     private ImageView imagen;
     private TextView TAG, tv_ubic;
     private int sitioID,comID;
-    private String name,descr;
+    private String name,descr,tag;
     private Double lat,lng;
 
 
@@ -56,13 +56,13 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            cargarSitio(extras);
-
             sitioID = extras.getInt("id");
             name = extras.getString("nombre");
             descr= extras.getString("descripcion");
+            tag = extras.getString("tag");
             lat = extras.getDouble("latitud");
             lng = extras.getDouble("longitud");
+            cargarSitio(extras);
             Button borrar_sitio = findViewById(R.id.borrar_privado);
             borrar_sitio.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,12 +138,12 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
 
     private void cargarSitio(Bundle extras){
 
-        nombre.setText(extras.getString("nombre"));
-        descripcion.setText(extras.getString("descripcion"));
-        TAG.setText(extras.getString("tag"));DecimalFormat formatter = new DecimalFormat("#0.00");
-        if(lng!=null&&lat!=null) {
-            tv_ubic.setText("Latitud: " + formatter.format(lat) + ", Longitud: " + formatter.format(lng));
-        }
+        nombre.setText(name);
+        descripcion.setText(descr);
+        TAG.setText(tag);
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+        tv_ubic.setText("Latitud: " + formatter.format(lat) + ", Longitud: " + formatter.format(lng));
+
 //        String img = extras.getString("imagen");
 //        if(img!=null) {
 //            byte[] imagenByte = Base64.decode(img, Base64.DEFAULT);
