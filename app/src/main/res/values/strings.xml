@@ -77,4 +77,8 @@
     <string name="anadirSitiocorrecto">El sitio ha sido añadido correctamente</string>
     <string name="dg_sinInternet">Problema de conexión</string>
     <string name="dg_msg_sinInternet">Ha habido un problema al conectarse al servidor, comprueba que tienes conexión e inténtalo de nuevo</string>
+    <string name="dg_tituloEliminar">Eliminar Sitio</string>
+    <string name="dg_mnsEliminar">¿Quieres eliminar este sitio?</string>
+    <string name="dg_op1SI">Si</string>
+    <string name="dg_op2No">No</string>
 </resources>

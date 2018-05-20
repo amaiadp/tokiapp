@@ -1,9 +1,11 @@
 package com.example.amaia.grupo;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -67,9 +69,30 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
             borrar_sitio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-               //TODO: Borrar de la DB
-                    DBRemote db = new DBRemote(MostrarSitioPrivado.this,MostrarSitioPrivado.this,"borrarSitio","sitiosMod","sitioID="+sitioID);
-                    db.execute();
+                    //pedir confirmacion de eliminar con un dialogo
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MostrarSitioPrivado.this);
+                    builder.setTitle(getResources().getString(R.string.dg_tituloEliminar));
+                    builder.setMessage(getResources().getString(R.string.dg_mnsEliminar));
+                    builder.setPositiveButton(getResources().getString(R.string.dg_op1SI), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+
+                            DBRemote db = new DBRemote(MostrarSitioPrivado.this,MostrarSitioPrivado.this,"borrarSitio","sitiosMod","sitioID="+sitioID);
+                            db.execute();
+
+
+
+                        }
+                    });
+                    builder.setNegativeButton(getResources().getString(R.string.dg_op2No), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
                 }
             });
 
