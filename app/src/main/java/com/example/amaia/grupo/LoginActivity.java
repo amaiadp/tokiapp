@@ -28,6 +28,8 @@ public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDa
         if (prefs.contains("user_id")) {
             if(extras!=null && extras.getString("tag", null)!=null){
                 Log.i("LOGIN", "mantener sesion + aviso");
+                MainActivity.setUserId(prefs.getInt("user_id", -1));
+                MainActivity.setUsername(prefs.getString("user_name", ""));
                 Intent i = new Intent(this,TabsPublico.class);
                 i.putExtras(extras);
                 startActivity(i);
@@ -101,6 +103,9 @@ public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDa
                         if(extras!=null && extras.getString("tag", null)!=null){
                             Log.i("LOGIN", "mantener sesion (primera vez) + aviso");
                             Intent i = new Intent(this,TabsPublico.class);
+
+                            MainActivity.setUserId(idUser);
+                            MainActivity.setUsername(username);
                             i.putExtras(extras);
                             startActivity(i);
                             LoginActivity.this.finish();
@@ -116,6 +121,8 @@ public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDa
                         if(extras!=null && extras.getString("tag", null)!=null){
                             Log.i("LOGIN", "NO mantener sesion + aviso");
                             Intent i = new Intent(this,TabsPublico.class);
+                            MainActivity.setUserId(idUser);
+                            MainActivity.setUsername(username);
                             i.putExtras(extras);
                             startActivity(i);
                             LoginActivity.this.finish();

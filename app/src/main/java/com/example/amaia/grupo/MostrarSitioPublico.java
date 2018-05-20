@@ -103,7 +103,7 @@ public class MostrarSitioPublico extends Fragment implements DBRemote.BaseDatosR
     public void responderDB(String resultados, String id) {
         if(resultados!=null){
             byte[] imagenByte = Base64.decode(resultados, Base64.DEFAULT);
-            Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
+            Bitmap imagenBitmap = Sitio.decodeSampledBitmapFromResource(imagenByte,100,100);
             imagen.setImageBitmap(imagenBitmap);
         }
     }

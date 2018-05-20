@@ -3,7 +3,6 @@ package com.example.amaia.grupo;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -161,7 +160,7 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
         switch (id){
             case "seleccionarPrimeraImagen":
                 byte[] imagenByte = Base64.decode(resultados, Base64.DEFAULT);
-                Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
+                Bitmap imagenBitmap = Sitio.decodeSampledBitmapFromResource(imagenByte,100,100);
                 imagen.setImageBitmap(imagenBitmap);
             break;
             case "borrarSitio":

@@ -1,5 +1,7 @@
 package com.example.amaia.grupo;
 
+import android.*;
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +40,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -70,6 +73,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
     int IMAGEN_GALERIA = 222;
     private Button imagenAnadir,imagenesMostrar;
     static final int PERMISO_UBICACION = 888;
+    static final int PERMISO_EXTENAR_STORAGE = 999;
     private Spinner spinner;
     private String[] lista_tag = {"otro","restauracion","cultura","ocio"};
     private RecyclerView listaImagenes;
@@ -313,9 +317,29 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                                         startActivityForResult(elIntent, IMAGEN_CAMARA);
                                     }
                                 }else{//coger de galeria
-                                    Intent elIntentGal = new Intent(Intent.ACTION_PICK,
-                                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                    startActivityForResult(elIntentGal, IMAGEN_GALERIA);
+                                    if (ContextCompat.checkSelfPermission(AnadirSitioActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                                            != PackageManager.PERMISSION_GRANTED) {
+                                        //EL PERMISO NO ESTÁ CONCEDIDO, PEDIRLO
+
+                                        if (ActivityCompat.shouldShowRequestPermissionRationale(AnadirSitioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION))
+                                        {
+                                            // MOSTRAR AL USUARIO UNA EXPLICACIÓN DE POR QUÉ ES NECESARIO EL PERMISO
+                                            //PEDIR EL PERMISO DE NUEVO
+                                            ActivityCompat.requestPermissions(AnadirSitioActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                                    AnadirSitioActivity.PERMISO_EXTENAR_STORAGE);
+                                        } else {
+                                            ActivityCompat.requestPermissions(AnadirSitioActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                                    AnadirSitioActivity.PERMISO_EXTENAR_STORAGE);
+                                        }
+
+                                    } else {
+                                        //EL PERMISO ESTÁ CONCEDIDO, EJECUTAR LA FUNCIONALIDAD
+                                        Intent elIntentGal = new Intent(Intent.ACTION_PICK,
+                                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                        startActivityForResult(elIntentGal, IMAGEN_GALERIA);
+                                    }
+
+
                                 }
                             }
                         });
@@ -448,7 +472,25 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                     alertDialog.show();
 
                 }
-                return;
+
+            }
+            case AnadirSitioActivity.PERMISO_EXTENAR_STORAGE:{
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    // PERMISO DENEGADO, DESHABILITAR LA FUNCIONALIDAD
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+                    alertDialog.setTitle(getResources().getString(R.string.dg_sinPermisoGaleria));
+                    alertDialog.setMessage(getResources().getString(R.string.dg_msg_sinPermisoGaleria));
+                    alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+
+                }
             }
         }
     }

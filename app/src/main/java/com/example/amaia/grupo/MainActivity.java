@@ -17,6 +17,14 @@ public class MainActivity extends DrawerActivity{
 
     private static String username;
 
+    public static void setUserId(int userId) {
+        MainActivity.userId = userId;
+    }
+
+    public static void setUsername(String username) {
+        MainActivity.username = username;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
