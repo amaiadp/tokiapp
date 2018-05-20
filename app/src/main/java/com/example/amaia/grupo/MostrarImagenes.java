@@ -12,9 +12,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MostrarImagenes extends DrawerActivity implements DBRemote.BaseDatosRespueta{
 
-    private String[] imagenes;
+    private ArrayList<String> imagenes;
     private int sitioID;
 
     @Override
@@ -29,10 +32,20 @@ public class MostrarImagenes extends DrawerActivity implements DBRemote.BaseDato
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            sitioID = extras.getInt("sitioID");
+            if(extras.containsKey("action")){
+                if(extras.get("action").equals("borrar")){
+                    imagenes = AnadirSitioActivity.getImagenes();
+                    ImagePagerAdapter eladap = new ImagePagerAdapter(this,imagenes);
+                    ViewPager vp = findViewById(R.id.pager_imagenes);
+                    vp.setAdapter(eladap);
+                }
+            }
+            else {
+                sitioID = extras.getInt("sitioID");
 
-            DBRemote db = new DBRemote(this,"conseguirImagenes","imagenes","sitioID="+sitioID);
-            db.execute();
+                DBRemote db = new DBRemote(this, "conseguirImagenes", "imagenes", "sitioID=" + sitioID);
+                db.execute();
+            }
 
         }
 
@@ -43,11 +56,11 @@ public class MostrarImagenes extends DrawerActivity implements DBRemote.BaseDato
         JSONParser parser = new JSONParser();
         try {
             JSONArray array = (JSONArray)parser.parse(resultados);
-            imagenes = new String[array.size()];
+            imagenes = new ArrayList<>();
             JSONObject json;
             for(int i = 0; i<array.size();i++) {
                 json = (JSONObject)array.get(i);
-                imagenes[i] = (String)json.get("imagen");
+                imagenes.add((String)json.get("imagen"));
             }
             ImagePagerAdapter eladap = new ImagePagerAdapter(this,imagenes);
             ViewPager vp = findViewById(R.id.pager_imagenes);

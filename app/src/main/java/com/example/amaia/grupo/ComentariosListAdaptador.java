@@ -37,7 +37,7 @@ public class ComentariosListAdaptador extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view= inflater.inflate(R.layout.comentario, null);
+        view= inflater.inflate(R.layout.item_comentario, null);
 
         username = view.findViewById(R.id.comusuario);
         String usuario = comentarios[i].getUsername();

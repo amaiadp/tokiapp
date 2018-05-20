@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.laclaseViewHolder>{
+public class MisSitiosAdapter extends RecyclerView.Adapter<MisSitiosAdapter.laclaseViewHolder>{
     private static Sitio[] sitios;
 
 
-    public RecyclerAdapter(Sitio[] psitios) {
+    public MisSitiosAdapter(Sitio[] psitios) {
         sitios = psitios;
     }
 

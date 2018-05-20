@@ -5,4 +5,5 @@
     <color name="colorAccent">#40ffec</color>
     <color name="blanco">#fff</color>
     <color name="negro_fondo">#A000</color>
+    <color name="fondo_main_cardview">#0BA</color>
 </resources>

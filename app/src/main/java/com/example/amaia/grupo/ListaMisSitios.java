@@ -3,7 +3,6 @@ package com.example.amaia.grupo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -65,7 +64,7 @@ public class ListaMisSitios extends DrawerActivity implements DBRemote.BaseDatos
                             sitios[i] = new Sitio(sitio.toJSONString());
 
                         }
-                        RecyclerAdapter eladap = new RecyclerAdapter(sitios);
+                        MisSitiosAdapter eladap = new MisSitiosAdapter(sitios);
                         missitiosRV.setAdapter(eladap);
                         GridLayoutManager elLayoutManager = new
                                 GridLayoutManager(ListaMisSitios.this, 2, GridLayoutManager.VERTICAL, false);

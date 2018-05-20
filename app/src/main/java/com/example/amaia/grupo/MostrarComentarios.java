@@ -109,7 +109,7 @@ public class MostrarComentarios extends Fragment implements DBRemote.BaseDatosRe
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.dialogo_comentario);
             aceptar = findViewById(R.id.bttnaceptar);
             cancelar = findViewById(R.id.bttncancelar);

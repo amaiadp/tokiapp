@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -14,6 +16,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +26,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -41,7 +47,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,12 +64,14 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
     private CheckBox cb_privado;
     int PLACE_PICKER_REQUEST = 1;
     private TextView tv_ubicacion;
-    private ArrayList<Bitmap> imagenes = new ArrayList<>();
+    private static ArrayList<Bitmap> imagenes = new ArrayList<>();
     int IMAGEN_CAMARA = 111;
     int IMAGEN_GALERIA = 222;
-    private ImageButton imagenAnadir;
+    private Button imagenAnadir,imagenesMostrar;
     private Spinner spinner;
     private String[] lista_tag = {"otro","restauracion","cultura","ocio"};
+    private RecyclerView listaImagenes;
+    private AnadirImagenesAdapter eladap;
 
 
     private String hashMapToUrl(HashMap<String, String> params){
@@ -84,14 +95,49 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
     }
 
 
+
+    protected void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        Log.e("APP", "Latitud: "+latitud+", Longitud: "+longitud+", tv_ubic: "+tv_ubicacion.getText().toString());
+        Log.e("APP","calling-activity antes: "+savedInstanceState.get("calling-activity"));
+        savedInstanceState.putString("calling-activity","AnadirSitioActivity");
+        Log.e("APP","calling-activity despues: "+savedInstanceState.get("calling-activity"));
+        if(tv_ubicacion.getText().toString().contains("Latitud")) {
+            savedInstanceState.putDouble("latitud", latitud);
+            savedInstanceState.putDouble("longitud", longitud);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_anadir_sitio);
+
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_anadir_sitio, null, false);
         drawer.addView(contentView, 0);
+
+
+        Log.e("APP",Arrays.toString(imagenes.toArray()));
+        Bundle extras = getIntent().getExtras();
+        if (savedInstanceState!= null) {
+            if (savedInstanceState.containsKey("calling-activity")) {
+                extras.putString("calling-activity", savedInstanceState.getString("calling-activity"));
+            }
+        }
+        if(extras!=null){
+            Log.e("APP","calling-activity: "+ (String)extras.get("calling-activity"));
+            switch ((String)extras.get("calling-activity")){
+                case "MainActivity":
+                    imagenes = new ArrayList<>();
+            }
+        }
+        listaImagenes = findViewById(R.id.imagenes);
+        eladap = new AnadirImagenesAdapter(imagenes);
+        listaImagenes.setAdapter(eladap);
+        LinearLayoutManager elLayoutManager = new LinearLayoutManager(AnadirSitioActivity.this, LinearLayout.HORIZONTAL,false);
+        listaImagenes.setLayoutManager(elLayoutManager);
 
 
 
@@ -103,6 +149,16 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
 
         cb_privado = (CheckBox) findViewById(R.id.cb_privado);
         tv_ubicacion = (TextView) findViewById(R.id.tv_ubiDato);
+
+        if (savedInstanceState!= null) {
+            if(savedInstanceState.containsKey("latitud")&&savedInstanceState.containsKey("longitud")) {
+                longitud = savedInstanceState.getDouble("longitud");
+                latitud = savedInstanceState.getDouble("latitud");
+                DecimalFormat formatter = new DecimalFormat("#0.00");
+                tv_ubicacion.setText("Latitud: " + formatter.format(latitud) + ", Longitud: " + formatter.format(longitud));
+            }
+        }
+
         spinner = (Spinner) findViewById(R.id.sp_tag);
 
         Button bt_anadir = (Button) findViewById(R.id.bt_anadir);
@@ -124,7 +180,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                     detail.put("user_id", String.valueOf(MainActivity.getUserId()));
                     detail.put("nombre", String.valueOf(et_nombre.getText()));
                     detail.put("descripcion", String.valueOf(et_descripcion.getText()));
-                    detail.put("comentario", String.valueOf(et_comentario.getText()));
+                    detail.put("item_comentario", String.valueOf(et_comentario.getText()));
                     detail.put("privado", String.valueOf(cb_privado.isChecked()));
                     detail.put("latitud", String.valueOf(latitud));
                     detail.put("longitud", String.valueOf(longitud));
@@ -152,7 +208,9 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
         });
 
 
-        TextView tv_ubic = (TextView) findViewById(R.id.tv_ubic);
+
+
+        Button tv_ubic = (Button) findViewById(R.id.tv_ubic);
         tv_ubic.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -180,7 +238,8 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                                                             if (location != null) {
                                                                 latitud = location.getLatitude();
                                                                 longitud = location.getLongitude();
-                                                                tv_ubicacion.setText(latitud + "," + longitud);
+                                                                DecimalFormat formatter = new DecimalFormat("#0.00");
+                                                                tv_ubicacion.setText("Latitud: "+formatter.format(latitud) + ", Longitud: " + formatter.format(longitud));
                                                             } else {
 
                                                             }
@@ -221,10 +280,11 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                             }
                         });
                 builder.show();
+
             }
         });
 
-        imagenAnadir = (ImageButton) findViewById(R.id.anadirImagen);
+        imagenAnadir = (Button) findViewById(R.id.anadirImagen);
         imagenAnadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +310,31 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
             }
         });
 
+        imagenesMostrar = findViewById(R.id.mostrarImagenes);
+        imagenesMostrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("APP",Arrays.toString(imagenes.toArray()));
+                Intent imgns = new Intent(AnadirSitioActivity.this, MostrarImagenes.class);
+                imgns.putExtra("action","borrar");
+                imgns.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(imgns);
+            }
+        });
+
+    }
+
+    private static ArrayList<String > BitmapToString(ArrayList<Bitmap> bitmaps){
+        ArrayList<String> strings = new ArrayList<>();
+        for(Bitmap bitmap: bitmaps){
+            if(bitmap!=null) {
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, output);
+                byte[] byteArray = output.toByteArray();
+                strings.add(Base64.encodeToString(byteArray, Base64.DEFAULT));
+            }
+        }
+        return strings;
     }
 
     private boolean camposRellenados() {
@@ -263,47 +348,38 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
 //        Log.i("AnadirSitio", "onActivityResult placePicker");
         if (resultCode == RESULT_OK) {
             if (requestCode == PLACE_PICKER_REQUEST) {
-
-
-                    Place place = PlacePicker.getPlace(this,data);
-                    Log.i("AnadirSitio", "Place: "+place.getName());
-                    LatLng ll = place.getLatLng();
-                    latitud = ll.latitude;
-                    longitud = ll.longitude;
-                    tv_ubicacion.setText(latitud+","+longitud);
+                Place place = PlacePicker.getPlace(this,data);
+                Log.i("AnadirSitio", "Place: "+place.getName());
+                LatLng ll = place.getLatLng();
+                latitud = ll.latitude;
+                longitud = ll.longitude;
+                DecimalFormat formatter = new DecimalFormat("#0.00");
+                tv_ubicacion.setText("Latitud: " + formatter.format(latitud) + ", Longitud: " + formatter.format(longitud));
             }else{
                 if (requestCode == IMAGEN_GALERIA) {//GALERIA
-
                     Uri imagenSeleccionada= data.getData();
                     try {
                         Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
                         imagenes.add(imageBitmap);
+                        eladap.notifyItemInserted(imagenes.size() - 1);
+                        eladap.notifyDataSetChanged();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    if(imagenes.size()==1){
-                        imagenAnadir.setImageBitmap(imagenes.get(0));
-                    }
-
                 }else{
                     if (requestCode == IMAGEN_CAMARA) {//CAMARA
-
-
                         Bundle extras = data.getExtras();
                         Bitmap imageBitmap = (Bitmap) extras.get("data");
                         imagenes.add(imageBitmap);
-
-                        if(imagenes.size()==1){
-                            imagenAnadir.setImageBitmap(imagenes.get(0));
-                        }
+                        eladap.notifyItemInserted(imagenes.size() - 1);
+                        eladap.notifyDataSetChanged();
                     }
                 }
             }
         }
     }
-
-
 
     @Override
     public void responderDB(String resultados, String id) {
@@ -315,4 +391,9 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                 break;
         }
     }
+
+    public static ArrayList<String> getImagenes(){
+        return BitmapToString(imagenes);
+    }
+
 }

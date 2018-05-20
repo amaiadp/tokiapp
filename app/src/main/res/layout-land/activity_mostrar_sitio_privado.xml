@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    tools:context="com.example.amaia.grupo.MostrarSitioPrivado">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--Informacion general START-->
+            <TextView
+                android:id="@+id/title_informacion_general"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margen_comienzo_title"
+                android:layout_marginEnd="@dimen/margen_final"
+                android:layout_marginTop="@dimen/margen_arriba"
+                android:text="@string/title_informacion_general"
+                android:textSize="@dimen/tamano_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvnombreprivado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre"
+                android:layout_marginStart="@dimen/margen_comienzo"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                android:textSize="@dimen/tamano_tag"
+                app:layout_constraintStart_toStartOf="@id/title_informacion_general"
+                app:layout_constraintTop_toBottomOf="@id/title_informacion_general"/>
+
+            <EditText
+                android:id="@+id/etnombreprivado"
+                android:layout_width="@dimen/tamano_etValue_land"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margen_comienzo"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                android:ems="10"
+                android:textSize="@dimen/tamano_value"
+                android:maxLength="@integer/limit_nombre"
+                android:maxLines="2"
+                android:inputType="textCapSentences|textMultiLine"
+                app:layout_constraintStart_toStartOf="@id/tvnombreprivado"
+                app:layout_constraintTop_toBottomOf="@id/tvnombreprivado" />
+
+            <TextView
+                android:id="@+id/tvdescripcionprivado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/descripcion"
+                android:textSize="@dimen/tamano_tag"
+                android:layout_marginStart="@dimen/margen_comienzo"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                android:maxLength="@integer/limit_descripcion"
+                app:layout_constraintTop_toBottomOf="@id/etnombreprivado"
+                app:layout_constraintStart_toStartOf="@id/title_informacion_general" />
+
+            <EditText
+                android:id="@+id/etdescripcionprivado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="top|left"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="6"
+                android:textSize="@dimen/tamano_value"
+                android:maxLength="@integer/limit_descripcion"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                android:layout_marginStart="@dimen/margen_comienzo_et"
+                android:layout_marginEnd="@dimen/margen_final_et"
+                app:layout_constraintTop_toBottomOf="@id/tvdescripcionprivado"
+                app:layout_constraintStart_toStartOf="@id/tvdescripcionprivado"/>
+
+            <TextView
+                android:id="@+id/tvTAGprivado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tag"
+                android:textSize="@dimen/tamano_tag"
+                android:layout_marginStart="@dimen/margen_comienzo"
+                app:layout_constraintStart_toEndOf="@id/etnombreprivado"
+                app:layout_constraintTop_toTopOf="@id/tvnombreprivado" />
+
+            <TextView
+                android:id="@+id/etTAGprivado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="@dimen/tamano_value"
+                android:layout_marginStart="@dimen/margen_comienzo"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                app:layout_constraintStart_toStartOf="@id/tvTAGprivado"
+                app:layout_constraintTop_toBottomOf="@id/tvTAGprivado" />
+            <!--Informacion general END-->
+
+
+
+            <View
+                android:id="@+id/separadorInfoGeneralUbicacion"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tamano_space"
+                android:layout_marginTop="@dimen/margen_encima_space"
+                android:layout_marginEnd="@dimen/margen_space"
+                android:layout_marginStart="@dimen/margen_space"
+                android:background="@color/negro_fondo"
+                app:layout_constraintTop_toBottomOf="@id/etdescripcionprivado"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+            <!--Ubicacion START-->
+            <TextView
+                android:id="@+id/title_ubicacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margen_comienzo_title"
+                android:layout_marginEnd="@dimen/margen_final"
+                android:layout_marginTop="@dimen/margen_debajo_space"
+                android:text="@string/title_ubicacion"
+                android:textSize="@dimen/tamano_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/separadorInfoGeneralUbicacion"/>
+
+            <Button
+                android:id="@+id/btnmostrarMapaPrivado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margen_final"
+                android:text="@string/mostrar"
+                android:drawablePadding="4dp"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                android:drawableStart="@drawable/ic_place_black_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/separadorInfoGeneralUbicacion" />
+
+
+            <TextView
+                android:id="@+id/tv_ubiDato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margen_comienzo"
+                android:layout_marginTop="@dimen/margen_debajo_ubic"
+                android:textSize="@dimen/tamano_value"
+                app:layout_constraintStart_toStartOf="@id/title_ubicacion"
+                app:layout_constraintTop_toBottomOf="@+id/btnmostrarMapaPrivado" />
+            <!--Ubicacion END-->
+
+
+
+            <View
+                android:id="@+id/separadorUbicacionImagenes"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tamano_space"
+                android:layout_marginTop="@dimen/margen_encima_space"
+                android:layout_marginEnd="@dimen/margen_space"
+                android:layout_marginStart="@dimen/margen_space"
+                android:background="@color/negro_fondo"
+                app:layout_constraintTop_toBottomOf="@id/tv_ubiDato"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+            <!--Imagenes START-->
+            <TextView
+                android:id="@+id/title_imagenes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margen_comienzo_title"
+                android:layout_marginEnd="@dimen/margen_final"
+                android:layout_marginTop="@dimen/margen_debajo_space"
+                android:text="@string/title_imagenes"
+                android:textSize="@dimen/tamano_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/separadorUbicacionImagenes"/>
+
+            <ImageView
+                android:id="@+id/imagenPrivado"
+                android:layout_width="@dimen/tamano_imagen"
+                android:layout_height="@dimen/tamano_imagen"
+                android:layout_marginStart="@dimen/margen_comienzo"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                app:layout_constraintTop_toBottomOf="@id/title_imagenes"
+                app:layout_constraintStart_toStartOf="@id/title_imagenes"/>
+
+            <Button
+                android:id="@+id/btnmostrarImagenesPrivado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mostrar"
+                android:layout_marginEnd="@dimen/margen_final"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_photo_library_black_24dp"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/imagenPrivado"
+                app:layout_constraintBottom_toBottomOf="@id/imagenPrivado"/>
+            <!--Imagenes END-->
+
+
+
+            <View
+                android:id="@+id/separadorImagenesComentarios"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tamano_space"
+                android:layout_marginTop="@dimen/margen_encima_space"
+                android:layout_marginEnd="@dimen/margen_space"
+                android:layout_marginStart="@dimen/margen_space"
+                android:background="@color/negro_fondo"
+                app:layout_constraintTop_toBottomOf="@id/imagenPrivado"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+            <!--Comentario START-->
+            <TextView
+                android:id="@+id/title_comentarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margen_comienzo_title"
+                android:layout_marginEnd="@dimen/margen_final"
+                android:layout_marginTop="@dimen/margen_debajo_space"
+                android:text="@string/comentario"
+                android:textSize="@dimen/tamano_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/separadorImagenesComentarios"/>
+
+            <EditText
+                android:id="@+id/etcomentariosprivado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margen_final_et"
+                android:textSize="@dimen/tamano_value"
+                android:layout_marginStart="@dimen/margen_comienzo"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="@integer/limit_comentario"
+                android:layout_marginTop="@dimen/margen_debajo_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_comentarios" />
+
+            <Button
+                android:id="@+id/borrar_privado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/borrar"
+                android:layout_marginTop="@dimen/margen_debajo_values_btn"
+                android:layout_marginBottom="@dimen/margen_debajo_values_btn"
+                app:layout_constraintTop_toBottomOf="@id/etcomentariosprivado"
+                app:layout_constraintStart_toStartOf="parent"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_delete_forever_black_24dp"
+                app:layout_constraintEnd_toStartOf="@id/editar_privado"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <Button
+                android:id="@+id/editar_privado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editar"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_edit_black_24dp"
+                app:layout_constraintStart_toEndOf="@id/borrar_privado"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/borrar_privado" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

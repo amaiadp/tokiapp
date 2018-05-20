@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 public class MostrarSitioPublico extends Fragment implements DBRemote.BaseDatosRespueta {
 
     private int id;
     private Double latitud,longitud;
-    private EditText etnombre,etdescripcion,etTAG;
+    private TextView etnombre,etdescripcion,etTAG, tv_ubic;
     private String name,descr;
     private ImageView imagen;
 
@@ -39,6 +42,7 @@ public class MostrarSitioPublico extends Fragment implements DBRemote.BaseDatosR
         etnombre = v.findViewById(R.id.etnombrepublico);
         etTAG = v.findViewById(R.id.etTAG);
         imagen = v.findViewById(R.id.imagenPublico);
+        tv_ubic = v.findViewById(R.id.tv_ubiDato);
         if (extras != null) {
             id = extras.getInt("id");
             name = extras.getString("nombre");
@@ -83,6 +87,10 @@ public class MostrarSitioPublico extends Fragment implements DBRemote.BaseDatosR
         etnombre.setText(extras.getString("nombre"));
         etdescripcion.setText(extras.getString("descripcion"));
         etTAG.setText(extras.getString("tag"));
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+        if(longitud!=null&&latitud!=null) {
+            tv_ubic.setText("Latitud: " + formatter.format(latitud) + ", Longitud: " + formatter.format(longitud));
+        }
 //        String img = extras.getString("imagen");
 //        if(img!=null) {
 //            byte[] imagenByte = Base64.decode(img, Base64.DEFAULT);

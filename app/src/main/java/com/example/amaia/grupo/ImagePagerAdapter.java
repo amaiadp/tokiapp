@@ -6,10 +6,14 @@ import android.graphics.BitmapFactory;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.PagerAdapter;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by zihara on 9/05/18.
@@ -19,9 +23,9 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
-    String[] imagenes;
+    ArrayList<String> imagenes;
 
-    public ImagePagerAdapter(Context context, String[] images) {
+    public ImagePagerAdapter(Context context, ArrayList<String> images) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imagenes = images;
@@ -29,7 +33,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return imagenes.length;
+        return imagenes.size();
     }
 
     @Override
@@ -39,10 +43,11 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View itemView = mLayoutInflater.inflate(R.layout.imagen, container, false);
+        View itemView = mLayoutInflater.inflate(R.layout.item_imagen, container, false);
 
+        Log.w("APP", Arrays.toString(imagenes.toArray()));
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imagenMostrar);
-        String imagenString = imagenes[position];
+        String imagenString = imagenes.get(position);
         byte[] imagenByte = Base64.decode(imagenString, Base64.DEFAULT);
         Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
         imageView.setImageBitmap(imagenBitmap);

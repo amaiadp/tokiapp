@@ -34,6 +34,8 @@ public class MainActivity extends DrawerActivity{
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, AnadirSitioActivity.class);
+                i.putExtra("calling-activity","MainActivity");
+                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
             }
         });

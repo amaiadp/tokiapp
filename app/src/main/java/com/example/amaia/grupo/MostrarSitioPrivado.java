@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.simple.JSONArray;
@@ -22,14 +23,16 @@ import org.json.simple.parser.ParseException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.BaseDatosRespueta{
 
-    private EditText nombre,descripcion,TAG;
+    private EditText nombre,descripcion;
     private EditText comentario;
     private ImageView imagen;
+    private TextView TAG, tv_ubic;
     private int sitioID,comID;
     private String name,descr;
     private Double lat,lng;
@@ -50,7 +53,7 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
         TAG = findViewById(R.id.etTAGprivado);
         imagen = findViewById(R.id.imagenPrivado);
         comentario = findViewById(R.id.etcomentariosprivado);
-
+        tv_ubic = findViewById(R.id.tv_ubiDato);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -89,7 +92,7 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
                     else {
                         HashMap<String, String> detalles = new HashMap<>();
                         detalles.put("comentID", String.valueOf(comID));
-                        detalles.put("comentario", comentario.getText().toString().trim());
+                        detalles.put("item_comentario", comentario.getText().toString().trim());
                         detalles.put("sitioID", String.valueOf(sitioID));
                         detalles.put("nombre", nom);
                         detalles.put("descripcion", desc);
@@ -138,7 +141,10 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
 
         nombre.setText(extras.getString("nombre"));
         descripcion.setText(extras.getString("descripcion"));
-        TAG.setText(extras.getString("tag"));
+        TAG.setText(extras.getString("tag"));DecimalFormat formatter = new DecimalFormat("#0.00");
+        if(lng!=null&&lat!=null) {
+            tv_ubic.setText("Latitud: " + formatter.format(lat) + ", Longitud: " + formatter.format(lng));
+        }
 //        String img = extras.getString("imagen");
 //        if(img!=null) {
 //            byte[] imagenByte = Base64.decode(img, Base64.DEFAULT);
@@ -186,7 +192,7 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
                     Comentario com = new Comentario(((JSONObject)array.get(0)).toJSONString());
                     comentario.setText(com.getTexto());
                     Log.w("APP","comID (antes): "+comID);
-                    Log.w("APP","comID (comentario): "+com.getId());
+                    Log.w("APP","comID (item_comentario): "+com.getId());
                     comID = com.getId();
                     Log.w("APP","comID (despues): "+comID);
                 } catch (ParseException e) {

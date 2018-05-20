@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">grupo</string>
-    <string name="txt_login">Login</string>
+    <string name="txt_login"><b>Login</b></string>
     <string name="txt_usuario">Usuario</string>
     <string name="txt_contrasena">Contraseña</string>
     <string name="bt_login">Entrar</string>
-    <string name="txck_registro">Registrarse</string>
+    <string name="txck_registro"><u>Registrarse</u></string>
     <string name="mns_datosLoginIncorrectos">Los datos de Login son incorrectos</string>
     <string name="bt_registro">Registrarse</string>
-    <string name="txt_registro">Registro</string>
+    <string name="txt_registro"><b>Registro</b></string>
     <string name="mns_usuarioYaexiste">Ya existe un usuario con ese nombre</string>
     <string name="mns_registroCorrecto">El registro se ha realizado correctamente</string>
     <string name="cb_mantenerSesion">Mantener sesión iniciada</string>
@@ -44,12 +44,12 @@
 
     <string name="mis_sitios">Mis Sitios</string>
     <string name="explorar">Explorar</string>
-    <string name="añadir">Añadir nuevo sitio</string>
-    <string name="añadirComentario"><u>Añadir comentario</u></string>
+    <string name="anadirSitio">Añadir \nnuevo sitio</string>
+    <string name="anadirComentario">Añadir comentario</string>
     <string name="mensajeComentarioAnadido">El comentario ha sido añadido correctamente</string>
     <string name="noRelleno">Rellene todos los campos</string>
     <string name="comentarioNoAnadido">Comentario no añadido</string>
-    <string name="mostrarenmapa">Mostrar en mapa</string>
+    <string name="mostrar">Mostrar</string>
     <string name="sitioBorrado">El sitio se ha borrado correctamente</string>
     <string name="error">Ha ocurrido algun error</string>
     <string name="sitioEditado">El sitio se ha editado correctamente</string>
@@ -62,5 +62,13 @@
     <string name="dg_msgFaltaInfo">Rellena los campos de nombre, descripción y ubicación por lo menos</string>
     <string name="borrar">BORRAR</string>
     <string name="editar">EDITAR</string>
+    <string name="title_informacion_general"><b>Información general</b></string>
+    <string name="title_ubicacion"><b>Ubicación</b></string>
+    <string name="marca_check">Marcalo para crear un sitio que solo puedas ver tu</string>
+    <string name="nada_ubic">No has seleccionado una ubicación</string>
+    <string name="title_imagenes"><b>Imágenes</b></string>
+    <string name="informacion">Información</string>
+    <string name="comentarios">Comentarios</string>
+    <string name="anadirComentarioTitle">Añadir Comentario</string>
 
 </resources>

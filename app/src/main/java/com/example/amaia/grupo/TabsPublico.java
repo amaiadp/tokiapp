@@ -26,8 +26,8 @@ public class TabsPublico extends DrawerActivity {
         setSupportActionBar(toolbar);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Información"));
-        tabLayout.addTab(tabLayout.newTab().setText("Comentarios"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.informacion).setIcon(R.drawable.ic_info_white));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.comentarios).setIcon(R.drawable.ic_comment_white));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
