@@ -431,7 +431,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case AnadirSitioActivity.PERMISO_UBICACION: {
+            case AnadirSitioActivity.PERMISO_UBICACION:
                 // Si la petición se cancela, granResults estará vacío
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // PERMISO CONCEDIDO
@@ -474,8 +474,8 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
 
                 }
 
-            }
-            case AnadirSitioActivity.PERMISO_EXTENAR_STORAGE:{
+            break;
+            case AnadirSitioActivity.PERMISO_EXTENAR_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 } else {
@@ -492,7 +492,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                     alertDialog.show();
 
                 }
-            }
+            break;
         }
     }
 
