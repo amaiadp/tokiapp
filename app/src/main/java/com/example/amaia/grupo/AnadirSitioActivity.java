@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -499,10 +500,13 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
     public void responderDB(String resultados, String id) {
         switch (id){
             case "anadirSitio":
-                Intent i = new Intent(AnadirSitioActivity.this, MainActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //al volver a la lista para que recargue la actividad
-                startActivity(i);
-                break;
+                if(Boolean.parseBoolean(resultados)) {
+                    Toast.makeText(AnadirSitioActivity.this,R.string.anadirSitiocorrecto,Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(AnadirSitioActivity.this, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //al volver a la lista para que recargue la actividad
+                    startActivity(i);
+                    break;
+                }
         }
     }
 

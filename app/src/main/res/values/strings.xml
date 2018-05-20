@@ -74,5 +74,6 @@
     <string name="dg_msg_sinPermisoLocalizacion">Para poder enviar la ubicación debe dar permiso a la app</string>
     <string name="dg_sinPermisoGaleria">Acción no permitida</string>
     <string name="dg_msg_sinPermisoGaleria">Para poder añadir fotos de galería debe dar permiso a la app</string>
+    <string name="anadirSitiocorrecto">El sitio ha sido añadido correctamente</string>
 
 </resources>
