@@ -402,7 +402,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                         byte[] imageBytes = baos.toByteArray();
-                        imageBitmap = Sitio.decodeSampledBitmapFromResource(imageBytes,1000,1000);
+                        imageBitmap = Sitio.decodeSampledBitmapFromResource(imageBytes,700,700);
                         imagenes.add(imageBitmap);
                         eladap.notifyItemInserted(imagenes.size() - 1);
                         eladap.notifyDataSetChanged();
@@ -418,7 +418,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                         byte[] imageBytes = baos.toByteArray();
-                        imageBitmap = Sitio.decodeSampledBitmapFromResource(imageBytes,200,200);
+                        imageBitmap = Sitio.decodeSampledBitmapFromResource(imageBytes,700,700);
                         imagenes.add(imageBitmap);
                         eladap.notifyItemInserted(imagenes.size() - 1);
                         eladap.notifyDataSetChanged();
