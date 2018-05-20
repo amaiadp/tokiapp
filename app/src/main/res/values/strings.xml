@@ -70,5 +70,7 @@
     <string name="informacion">Información</string>
     <string name="comentarios">Comentarios</string>
     <string name="anadirComentarioTitle">Añadir Comentario</string>
+    <string name="dg_sinPermisoLocalizacion">Acción no permitida</string>
+    <string name="dg_msg_sinPermisoLocalizacion">Para poder enviar la ubicación debe dar permiso a la app</string>
 
 </resources>

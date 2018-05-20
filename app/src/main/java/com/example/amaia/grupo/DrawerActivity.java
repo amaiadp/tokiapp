@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +38,10 @@ public class DrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.drawer_username);
+        navUsername.setText(MainActivity.getUsername());
     }
 
     @Override
@@ -80,6 +85,7 @@ public class DrawerActivity extends AppCompatActivity
             editor.remove("user_id");
             editor.apply();
             Intent i2 = new Intent(DrawerActivity.this, LoginActivity.class);
+            i2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i2);
             this.finish();
         }

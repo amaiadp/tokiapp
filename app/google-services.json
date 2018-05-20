@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "567890890097",
+    "firebase_url": "https://tokiapp-ca048.firebaseio.com",
+    "project_id": "tokiapp-ca048",
+    "storage_bucket": "tokiapp-ca048.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567890890097:android:b3080ba7f4736b7d",
+        "android_client_info": {
+          "package_name": "com.example.amaia.grupo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567890890097-40kq85p4amb9nshbm2tg1819fvh5fcru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.amaia.grupo",
+            "certificate_hash": "76790fbb16e654dec6d6bfe0c160b5918fc8586e"
+          }
+        },
+        {
+          "client_id": "567890890097-n0na1hrs54fa3ij3n5noijfndd51jtob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVoEbG-Lj1WVslUyphZxeXSwJeVdZ3vB0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567890890097-n0na1hrs54fa3ij3n5noijfndd51jtob.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

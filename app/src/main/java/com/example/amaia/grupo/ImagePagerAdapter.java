@@ -49,9 +49,9 @@ public class ImagePagerAdapter extends PagerAdapter {
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imagenMostrar);
         String imagenString = imagenes.get(position);
         byte[] imagenByte = Base64.decode(imagenString, Base64.DEFAULT);
-        Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
+//        Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
+        Bitmap imagenBitmap = Sitio.decodeSampledBitmapFromResource(imagenByte,800,1000);
         imageView.setImageBitmap(imagenBitmap);
-
         container.addView(itemView);
 
         return itemView;

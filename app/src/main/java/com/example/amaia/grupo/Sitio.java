@@ -4,13 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import java.text.DecimalFormat;
 
 /**
  * Created by zihara on 24/04/18.
@@ -93,16 +89,58 @@ public class Sitio {
         return usuario;
     }
 
-    public Bitmap getPrimeraImagen(){
+    public Bitmap getPrimeraImagen(int reqWidth, int reqHeight){
         String imagenString;
         if (imagen!=null) {
             imagenString = imagen;
             byte[] imagenByte = Base64.decode(imagenString, Base64.DEFAULT);
-            Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
-            return imagenBitmap;
+
+//            Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length);
+//            return imagenBitmap;
+            return Sitio.decodeSampledBitmapFromResource(imagenByte,reqWidth,reqHeight);
         }
         return null;
     }
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+    public static Bitmap decodeSampledBitmapFromResource(byte[] imagenByte,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(imagenByte, 0, imagenByte.length,options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+
+
+        return BitmapFactory.decodeByteArray(imagenByte,0,imagenByte.length,options);
+    }
+
 
     public String getImagen() {
         return imagen;

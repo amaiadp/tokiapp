@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -68,6 +69,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
     int IMAGEN_CAMARA = 111;
     int IMAGEN_GALERIA = 222;
     private Button imagenAnadir,imagenesMostrar;
+    static final int PERMISO_UBICACION = 888;
     private Spinner spinner;
     private String[] lista_tag = {"otro","restauracion","cultura","ocio"};
     private RecyclerView listaImagenes;
@@ -180,7 +182,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                     detail.put("user_id", String.valueOf(MainActivity.getUserId()));
                     detail.put("nombre", String.valueOf(et_nombre.getText()));
                     detail.put("descripcion", String.valueOf(et_descripcion.getText()));
-                    detail.put("item_comentario", String.valueOf(et_comentario.getText()));
+                    detail.put("comentario", String.valueOf(et_comentario.getText()));
                     detail.put("privado", String.valueOf(cb_privado.isChecked()));
                     detail.put("latitud", String.valueOf(latitud));
                     detail.put("longitud", String.valueOf(longitud));
@@ -190,7 +192,7 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
 
                     String params = AnadirSitioActivity.this.hashMapToUrl(detail);
                     Log.i("AnadirSitio", "Params:   " + params);
-                    DBRemote dbr = new DBRemote(AnadirSitioActivity.this, "anadirSitio", "sitiosMod", params);
+                    DBRemote dbr = new DBRemote(AnadirSitioActivity.this, AnadirSitioActivity.this, "anadirSitio", "sitiosMod", params);
                     dbr.execute();
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(AnadirSitioActivity.this).create();
@@ -228,6 +230,18 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                                         if (ContextCompat.checkSelfPermission(AnadirSitioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                                                 != PackageManager.PERMISSION_GRANTED) {
                                             //EL PERMISO NO ESTÁ CONCEDIDO, PEDIRLO
+
+                                            if (ActivityCompat.shouldShowRequestPermissionRationale(AnadirSitioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION))
+                                            {
+                                                // MOSTRAR AL USUARIO UNA EXPLICACIÓN DE POR QUÉ ES NECESARIO EL PERMISO
+                                                //PEDIR EL PERMISO DE NUEVO
+                                                ActivityCompat.requestPermissions(AnadirSitioActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                                        PERMISO_UBICACION);
+                                            } else {
+                                                ActivityCompat.requestPermissions(AnadirSitioActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                                        PERMISO_UBICACION);
+                                            }
+
                                         } else {
                                             //EL PERMISO ESTÁ CONCEDIDO, EJECUTAR LA FUNCIONALIDAD
                                             FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(AnadirSitioActivity.this);
@@ -280,7 +294,6 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                             }
                         });
                 builder.show();
-
             }
         });
 
@@ -357,9 +370,14 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                 tv_ubicacion.setText("Latitud: " + formatter.format(latitud) + ", Longitud: " + formatter.format(longitud));
             }else{
                 if (requestCode == IMAGEN_GALERIA) {//GALERIA
+
                     Uri imagenSeleccionada= data.getData();
                     try {
                         Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        byte[] imageBytes = baos.toByteArray();
+                        imageBitmap = Sitio.decodeSampledBitmapFromResource(imageBytes,1000,1000);
                         imagenes.add(imageBitmap);
                         eladap.notifyItemInserted(imagenes.size() - 1);
                         eladap.notifyDataSetChanged();
@@ -372,11 +390,65 @@ public class AnadirSitioActivity extends DrawerActivity implements DBRemote.Base
                     if (requestCode == IMAGEN_CAMARA) {//CAMARA
                         Bundle extras = data.getExtras();
                         Bitmap imageBitmap = (Bitmap) extras.get("data");
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        byte[] imageBytes = baos.toByteArray();
+                        imageBitmap = Sitio.decodeSampledBitmapFromResource(imageBytes,200,200);
                         imagenes.add(imageBitmap);
                         eladap.notifyItemInserted(imagenes.size() - 1);
                         eladap.notifyDataSetChanged();
                     }
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case AnadirSitioActivity.PERMISO_UBICACION: {
+                // Si la petición se cancela, granResults estará vacío
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // PERMISO CONCEDIDO
+                    // EJECUTAR LA FUNCIONALIDAD
+
+                    FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(AnadirSitioActivity.this);
+                    mFusedLocationClient.getLastLocation()
+                            .addOnSuccessListener(AnadirSitioActivity.this, new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+                                    if (location != null) {
+                                        latitud = location.getLatitude();
+                                        longitud = location.getLongitude();
+                                        tv_ubicacion.setText(latitud + "," + longitud);
+                                    } else {
+
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(AnadirSitioActivity.this, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+
+
+                } else {
+                    // PERMISO DENEGADO, DESHABILITAR LA FUNCIONALIDAD
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+                    alertDialog.setTitle(getResources().getString(R.string.dg_sinPermisoLocalizacion));
+                    alertDialog.setMessage(getResources().getString(R.string.dg_msg_sinPermisoLocalizacion));
+                    alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+
+                }
+                return;
             }
         }
     }

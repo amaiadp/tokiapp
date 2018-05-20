@@ -35,14 +35,14 @@ public class ListaMisSitios extends DrawerActivity implements DBRemote.BaseDatos
         missitiosRV = findViewById(R.id.lista_mis_sitios);
 
         usuerID = MainActivity.getUserId();
-        DBRemote db = new DBRemote(this,"seleccionarPrivados","sitios","userID="+MainActivity.getUserId());
+        DBRemote db = new DBRemote(this,this,"seleccionarPrivados","sitios","userID="+MainActivity.getUserId());
         db.execute();
 
         mostrarEnMapa = findViewById(R.id.mostrarEnMapa);
         mostrarEnMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DBRemote db = new DBRemote(ListaMisSitios.this,"seleccionarPrivadosMAPS","sitios", "userID="+MainActivity.getUserId());
+                DBRemote db = new DBRemote(ListaMisSitios.this, ListaMisSitios.this,"seleccionarPrivadosMAPS","sitios", "userID="+MainActivity.getUserId());
                 db.execute();
             }
         });

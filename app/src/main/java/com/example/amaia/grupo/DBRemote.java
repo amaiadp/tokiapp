@@ -1,5 +1,7 @@
 package com.example.amaia.grupo;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,21 +18,37 @@ import java.net.URL;
 
 public class DBRemote extends AsyncTask<Void, Void, String> {
 
-    private BaseDatosRespueta contexto;
+    private BaseDatosRespueta responder;
+    private Context contexto;
     private String id;
     private String phpName;
     private String params;
+
+    private ProgressDialog dialog;  //dialogo de espera
 
     public interface BaseDatosRespueta{
         void responderDB(String resultados, String id);
     }
 
-    public DBRemote(BaseDatosRespueta context, String id, String php, String pparams) {
+    public DBRemote(BaseDatosRespueta responder,Context context, String id, String php, String pparams) {
 
+        this.responder = responder;
         this.contexto = context;
         this.id = id;
         this.phpName = php;
         this.params = pparams;
+        if(contexto!=null) {//contexto==null ,sin actividad
+            this.dialog = new ProgressDialog(contexto);
+        }
+
+    }
+
+    @Override
+    protected void onPreExecute() {
+        if(dialog!=null) {
+            this.dialog.setMessage("Please wait");
+            this.dialog.show();
+        }
     }
 
     @Override
@@ -85,9 +103,13 @@ public class DBRemote extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        if (dialog!=null &&dialog.isShowing()) {
+            dialog.dismiss();
+        }
+
         Log.i("DB POSTexe", "resultado"+ result);
-        if(contexto!=null) {
-            ((BaseDatosRespueta) this.contexto).responderDB(result, this.id);
+        if(responder!=null) {
+            ((BaseDatosRespueta) this.responder).responderDB(result, this.id);
         }
     }
 }

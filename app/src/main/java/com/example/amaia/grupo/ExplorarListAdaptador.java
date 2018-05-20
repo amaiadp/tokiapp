@@ -55,7 +55,7 @@ public class ExplorarListAdaptador extends BaseAdapter {
         tvTag.setText(TAG);
 
         ImageView img = (ImageView) view.findViewById(R.id.imagen);
-        Bitmap imagen = sitios[i].getPrimeraImagen();
+        Bitmap imagen = sitios[i].getPrimeraImagen(70, 70);
         img.setImageBitmap(imagen);
 
         return view;
