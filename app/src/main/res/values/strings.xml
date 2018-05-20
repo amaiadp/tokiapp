@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">grupo</string>
+    <string name="app_name">TokiApp</string>
     <string name="txt_login"><b>Login</b></string>
     <string name="txt_usuario">Usuario</string>
     <string name="txt_contrasena">Contraseña</string>
