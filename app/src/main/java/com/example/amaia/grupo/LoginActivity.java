@@ -36,6 +36,9 @@ public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDa
                 this.finish();
             }else {
                 Log.i("LOGIN", "mantener sesion - aviso");
+
+                MainActivity.setUserId(prefs.getInt("user_id", -1));
+                MainActivity.setUsername(prefs.getString("user_name", ""));
                 //si en las preferencias existe el id del usuario (mantener sesion), abre directamente el main
                 Intent i = new Intent(this, MainActivity.class);
                 i.putExtra("user_id", prefs.getInt("user_id", -1));
@@ -111,6 +114,8 @@ public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDa
                             LoginActivity.this.finish();
                         }else {
                             Log.i("LOGIN", "mantener sesion (primera vez) - aviso");
+                            MainActivity.setUserId(idUser);
+                            MainActivity.setUsername(username);
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             i.putExtra("user_id", idUser);
                             i.putExtra("user_name", username);
@@ -128,6 +133,8 @@ public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDa
                             LoginActivity.this.finish();
                         }else {
                             Log.i("LOGIN", "NO mantener sesion - aviso");
+                            MainActivity.setUserId(idUser);
+                            MainActivity.setUsername(username);
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             i.putExtra("user_id", idUser);
                             i.putExtra("user_name", username);

@@ -1,7 +1,9 @@
 package com.example.amaia.grupo;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -109,7 +111,20 @@ public class DBRemote extends AsyncTask<Void, Void, String> {
 
         Log.i("DB POSTexe", "resultado"+ result);
         if(responder!=null) {
-            ((BaseDatosRespueta) this.responder).responderDB(result, this.id);
+            if(result==null){
+                AlertDialog alertDialog = new AlertDialog.Builder(this.contexto).create();
+                alertDialog.setTitle(contexto.getResources().getString(R.string.dg_sinInternet));
+                alertDialog.setMessage(contexto.getResources().getString(R.string.dg_msg_sinInternet));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }else {
+                ((BaseDatosRespueta) this.responder).responderDB(result, this.id);
+            }
         }
     }
 }
