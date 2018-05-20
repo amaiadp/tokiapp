@@ -48,7 +48,7 @@ public class MostrarSitioPublico extends Fragment implements DBRemote.BaseDatosR
             cargarSitio(extras);
         }
 
-        DBRemote db = new DBRemote(this, "seleccionarPrimeraImagen", "sitios", "sitioID=" + this.id);
+        DBRemote db = new DBRemote(this, null, "seleccionarPrimeraImagen", "sitios", "sitioID=" + this.id);
         db.execute();
 
 

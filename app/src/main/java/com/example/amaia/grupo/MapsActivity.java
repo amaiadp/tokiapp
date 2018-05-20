@@ -1,10 +1,21 @@
 package com.example.amaia.grupo;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -12,6 +23,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -70,6 +83,60 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         JSONParser parser = new JSONParser();
         try {
 
+            LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE );
+            boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if(statusOfGPS) {
+                if (ContextCompat.checkSelfPermission(MapsActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    //EL PERMISO NO ESTÁ CONCEDIDO, PEDIRLO
+
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(MapsActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION))
+                    {
+                        // MOSTRAR AL USUARIO UNA EXPLICACIÓN DE POR QUÉ ES NECESARIO EL PERMISO
+                        //PEDIR EL PERMISO DE NUEVO
+                        ActivityCompat.requestPermissions(MapsActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                AnadirSitioActivity.PERMISO_UBICACION);
+                    } else {
+                        ActivityCompat.requestPermissions(MapsActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                               AnadirSitioActivity.PERMISO_UBICACION);
+                    }
+
+                } else {
+                    //EL PERMISO ESTÁ CONCEDIDO, EJECUTAR LA FUNCIONALIDAD
+                    FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(MapsActivity.this);
+                    mFusedLocationClient.getLastLocation()
+                            .addOnSuccessListener(MapsActivity.this, new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+
+                                    mMap.setMyLocationEnabled(true);
+                                    if(listaSitios!=null &&location!=null){
+                                        LatLng sitio =new LatLng(location.getLatitude(),location.getLongitude());
+                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sitio,15));
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(MapsActivity.this, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+                }
+            }else{//si no esta el gps activado
+                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this).create();
+                alertDialog.setTitle(getResources().getString(R.string.dg_titNOgps));
+                alertDialog.setMessage(getResources().getString(R.string.dg_msgNOgps));
+                alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+
+
             if (listaSitios != null) {
 
                 LatLng sitio=null;
@@ -90,8 +157,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                if(sitio!=null) {
 //                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sitio,15));
 //                }
-                mMap.setMyLocationEnabled(true);
-                mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+
+
+
+
+
+
 
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
@@ -143,4 +214,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case AnadirSitioActivity.PERMISO_UBICACION: {
+                // Si la petición se cancela, granResults estará vacío
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // PERMISO CONCEDIDO
+                    // EJECUTAR LA FUNCIONALIDAD
+
+                    FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(MapsActivity.this);
+                    mFusedLocationClient.getLastLocation()
+                            .addOnSuccessListener(MapsActivity.this, new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+
+                                    mMap.setMyLocationEnabled(true);
+                                    if(listaSitios!=null &&location!=null){
+                                        LatLng sitio =new LatLng(location.getLatitude(),location.getLongitude());
+                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sitio,15));
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(MapsActivity.this, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+
+
+                } else {
+                    // PERMISO DENEGADO, DESHABILITAR LA FUNCIONALIDAD
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+                    alertDialog.setTitle(getResources().getString(R.string.dg_sinPermisoLocalizacion));
+                    alertDialog.setMessage(getResources().getString(R.string.dg_msg_sinPermisoLocalizacion));
+                    alertDialog.setButton(android.app.AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+
+                }
+                return;
+            }
+        }
+    }
+
+
 }

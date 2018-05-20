@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,20 +19,33 @@ import org.json.simple.parser.JSONParser;
 
 public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDatosRespueta {
 
+    private Bundle extras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+        extras = getIntent().getExtras();
         if (prefs.contains("user_id")) {
-            //si en las preferencias existe el id del usuario (mantener sesion), abre directamente la lista de IV
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("user_id", prefs.getInt("user_id", -1));
-            i.putExtra("user_name", prefs.getString("user_name", ""));
-            startActivity(i);
-            this.finish();
+            if(extras!=null && extras.getString("tag", null)!=null){
+                Log.i("LOGIN", "mantener sesion + aviso");
+                Intent i = new Intent(this,TabsPublico.class);
+                i.putExtras(extras);
+                startActivity(i);
+                this.finish();
+            }else {
+                Log.i("LOGIN", "mantener sesion - aviso");
+                //si en las preferencias existe el id del usuario (mantener sesion), abre directamente el main
+                Intent i = new Intent(this, MainActivity.class);
+                i.putExtra("user_id", prefs.getInt("user_id", -1));
+                i.putExtra("user_name", prefs.getString("user_name", ""));
+                startActivity(i);
+                this.finish();
+            }
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         Button bt_login = (Button) findViewById(R.id.bt_login);
         bt_login.setOnClickListener(new View.OnClickListener() {
@@ -41,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDa
                 EditText et_pass = (EditText) findViewById(R.id.et_password);
                 String txt_user = String.valueOf(et_user.getText());
                 String txt_pass = String.valueOf(et_pass.getText());
-                DBRemote dbr = new DBRemote(LoginActivity.this, "comprobarUsuario", "users", "username=" + txt_user + "&password=" + txt_pass);
+                DBRemote dbr = new DBRemote(LoginActivity.this, LoginActivity.this, "comprobarUsuario", "users", "username=" + txt_user + "&password=" + txt_pass);
                 dbr.execute();
             }
         });
@@ -83,16 +97,35 @@ public class LoginActivity extends AppCompatActivity implements  DBRemote.BaseDa
                         editor.putString("user_name", username);
                         editor.apply();
 
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        i.putExtra("user_id", idUser);
-                        i.putExtra("user_name", username);
-                        startActivity(i);
-                        LoginActivity.this.finish();
+
+                        if(extras!=null && extras.getString("tag", null)!=null){
+                            Log.i("LOGIN", "mantener sesion (primera vez) + aviso");
+                            Intent i = new Intent(this,TabsPublico.class);
+                            i.putExtras(extras);
+                            startActivity(i);
+                            LoginActivity.this.finish();
+                        }else {
+                            Log.i("LOGIN", "mantener sesion (primera vez) - aviso");
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            i.putExtra("user_id", idUser);
+                            i.putExtra("user_name", username);
+                            startActivity(i);
+                            LoginActivity.this.finish();
+                        }
                     } else {
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        i.putExtra("user_id", idUser);
-                        i.putExtra("user_name", username);
-                        startActivity(i);
+                        if(extras!=null && extras.getString("tag", null)!=null){
+                            Log.i("LOGIN", "NO mantener sesion + aviso");
+                            Intent i = new Intent(this,TabsPublico.class);
+                            i.putExtras(extras);
+                            startActivity(i);
+                            LoginActivity.this.finish();
+                        }else {
+                            Log.i("LOGIN", "NO mantener sesion - aviso");
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            i.putExtra("user_id", idUser);
+                            i.putExtra("user_name", username);
+                            startActivity(i);
+                        }
                     }
 
                 } else {

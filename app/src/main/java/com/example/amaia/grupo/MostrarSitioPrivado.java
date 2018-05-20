@@ -66,12 +66,12 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
                 @Override
                 public void onClick(View view) {
                //TODO: Borrar de la DB
-                    DBRemote db = new DBRemote(MostrarSitioPrivado.this,"borrarSitio","sitiosMod","sitioID="+sitioID);
+                    DBRemote db = new DBRemote(MostrarSitioPrivado.this,MostrarSitioPrivado.this,"borrarSitio","sitiosMod","sitioID="+sitioID);
                     db.execute();
                 }
             });
 
-            DBRemote db = new DBRemote(this, "seleccionarPrimeraImagen", "sitios", "sitioID=" + this.sitioID);
+            DBRemote db = new DBRemote(this,this, "seleccionarPrimeraImagen", "sitios", "sitioID=" + this.sitioID);
             db.execute();
 
 
@@ -94,14 +94,14 @@ public class MostrarSitioPrivado extends DrawerActivity implements DBRemote.Base
                         detalles.put("nombre", nom);
                         detalles.put("descripcion", desc);
 
-                        DBRemote db = new DBRemote(MostrarSitioPrivado.this, "editarSitio", "sitiosMod", hashMapToUrl(detalles));
+                        DBRemote db = new DBRemote(MostrarSitioPrivado.this, MostrarSitioPrivado.this, "editarSitio", "sitiosMod", hashMapToUrl(detalles));
                         db.execute();
                     }
                 }
             });
 
 
-            DBRemote db2 = new DBRemote(MostrarSitioPrivado.this,"conseguirComentarios","comentarios","sitioID="+sitioID);
+            DBRemote db2 = new DBRemote(MostrarSitioPrivado.this,MostrarSitioPrivado.this,"conseguirComentarios","comentarios","sitioID="+sitioID);
             db2.execute();
 
 

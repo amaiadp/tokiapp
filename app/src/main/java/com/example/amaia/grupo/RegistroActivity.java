@@ -33,7 +33,7 @@ public class RegistroActivity extends AppCompatActivity implements  DBRemote.Bas
                         Toast.makeText(RegistroActivity.this, getResources().getString(R.string.mns_userEspacio), Toast.LENGTH_SHORT).show();
                     }else{
 
-                        DBRemote dbr = new DBRemote(RegistroActivity.this, "registrarUsuario", "users", "username="+txt_user+"&password="+txt_user);
+                        DBRemote dbr = new DBRemote(RegistroActivity.this, RegistroActivity.this, "registrarUsuario", "users", "username="+txt_user+"&password="+txt_user);
                         dbr.execute();
                     }
                 }

@@ -3,24 +3,24 @@ package com.example.amaia.grupo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends DrawerActivity{
 
     private static int userId;
-    private String username;
+
+
+    private static String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
-        LayoutInflater inflater = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity_main, null, false);
-        drawer.addView(contentView, 0);
 
 
         Bundle extras = getIntent().getExtras(); //se necesita el id del usuario para poder saber cuales son sus sitios
@@ -28,6 +28,13 @@ public class MainActivity extends DrawerActivity{
             userId = extras.getInt("user_id");
             username = extras.getString("user_name");
         }
+
+
+        LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_main, null, false);
+        drawer.addView(contentView, 0);
+
 
         CardView añadir = findViewById(R.id.main_añadir);
         añadir.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +65,8 @@ public class MainActivity extends DrawerActivity{
             }
         });
 
+
+
     }
 
     public static int getUserId(){
@@ -65,5 +74,8 @@ public class MainActivity extends DrawerActivity{
     }
 
 
+    public static String getUsername() {
+        return username;
+    }
 
 }

@@ -31,7 +31,7 @@ public class MostrarImagenes extends DrawerActivity implements DBRemote.BaseDato
         if(extras!=null){
             sitioID = extras.getInt("sitioID");
 
-            DBRemote db = new DBRemote(this,"conseguirImagenes","imagenes","sitioID="+sitioID);
+            DBRemote db = new DBRemote(this,this,"conseguirImagenes","imagenes","sitioID="+sitioID);
             db.execute();
 
         }

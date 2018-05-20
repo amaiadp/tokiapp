@@ -40,12 +40,12 @@ public class ListaExplorar extends DrawerActivity implements AdapterView.OnItemC
         mostrarEnMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DBRemote db = new DBRemote(ListaExplorar.this,"seleccionarPublicosMAPS","sitios", "");
+                DBRemote db = new DBRemote(ListaExplorar.this, ListaExplorar.this,"seleccionarPublicosMAPS","sitios", "");
                 db.execute();
             }
         });
 
-        DBRemote db = new DBRemote(this,"seleccionarPublicos","sitios", "");
+        DBRemote db = new DBRemote(this,this,"seleccionarPublicos","sitios", "");
         db.execute();
     }
 

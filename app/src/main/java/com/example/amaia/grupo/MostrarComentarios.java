@@ -43,7 +43,7 @@ public class MostrarComentarios extends Fragment implements DBRemote.BaseDatosRe
 
             //llamada a conseguirComentarios
             DBRemote db;
-            db = new DBRemote(this, "conseguirComentarios", "comentarios", "sitioID=" + id);
+            db = new DBRemote(this, null, "conseguirComentarios", "comentarios", "sitioID=" + id);
             db.execute();
         }
 
@@ -86,7 +86,7 @@ public class MostrarComentarios extends Fragment implements DBRemote.BaseDatosRe
                 if(Boolean.parseBoolean(resultados)){
                     Toast.makeText(getActivity(),R.string.mensajeComentarioAnadido, Toast.LENGTH_SHORT).show();
                     DBRemote db;
-                    db = new DBRemote(this, "conseguirComentarios", "comentarios", "sitioID=" + this.id);
+                    db = new DBRemote(this, null,"conseguirComentarios", "comentarios", "sitioID=" + this.id);
                     db.execute();
                 }else {
                     Toast.makeText(getActivity(),R.string.comentarioNoAnadido, Toast.LENGTH_SHORT).show();
@@ -122,7 +122,7 @@ public class MostrarComentarios extends Fragment implements DBRemote.BaseDatosRe
                         Toast.makeText(MostrarComentarios.this.getActivity(),R.string.noRelleno, Toast.LENGTH_SHORT).show();
 
                     }else{
-                        DBRemote db = new DBRemote(MostrarComentarios.this,"anadirComentario","comentarios","userID="+MainActivity.getUserId()+"&sitioID="+id+"&texto="+mensaje);
+                        DBRemote db = new DBRemote(MostrarComentarios.this,null,"anadirComentario","comentarios","userID="+MainActivity.getUserId()+"&sitioID="+id+"&texto="+mensaje);
                         db.execute();
                         dismiss();
                     }

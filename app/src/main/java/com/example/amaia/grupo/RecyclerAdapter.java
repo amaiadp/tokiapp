@@ -28,7 +28,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.laclas
     @Override
     public void onBindViewHolder(laclaseViewHolder holder, int position) {
         holder.nombre.setText(sitios[position].getNombre());
-        holder.foto.setImageBitmap(sitios[position].getPrimeraImagen());
+        holder.foto.setImageBitmap(sitios[position].getPrimeraImagen(200, 200));
     }
 
     @Override

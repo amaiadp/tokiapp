@@ -62,5 +62,7 @@
     <string name="dg_msgFaltaInfo">Rellena los campos de nombre, descripción y ubicación por lo menos</string>
     <string name="borrar">BORRAR</string>
     <string name="editar">EDITAR</string>
+    <string name="dg_sinPermisoLocalizacion">Acción no permitida</string>
+    <string name="dg_msg_sinPermisoLocalizacion">Para poder enviar la ubicación debe dar permiso a la app</string>
 
 </resources>
